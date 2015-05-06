@@ -15,6 +15,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 public class Main extends Application {
@@ -46,11 +48,12 @@ public class Main extends Application {
 
         Group root = new Group();
         root.setStyle("-fx-background-color: grey;");
-        // image = new Image(getClass().getResourceAsStream("./book.jpg"));
+
+        image = new Image(new FileInputStream("book.jpg"));
 
         Label label = new Label();
         label.setText("Welcome to Smart Library");
-        //label.setGraphic(new ImageView(image));
+        label.setGraphic(new ImageView(image));
         label.setLayoutX(130);
         label.setLayoutY(0);
         label.setFont(new Font("Arial", 30));
