@@ -1,24 +1,20 @@
 package sample;
 
 import javafx.application.Application;
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 
 public class Main extends Application {
@@ -39,8 +35,12 @@ public class Main extends Application {
     private static Button buttonClose;
     private Button buttonEdit;
     private Button buttonDelete;
-    private static ChoiceBox cb;
+    private static ChoiceBox<Book> cb;
     private Image image;
+    private static ChoiceBox choicebox;
+    private static Button choiceEdit;
+    private static TextField textInfo;
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -66,7 +66,7 @@ public class Main extends Application {
 
         DropShadow shadow = new DropShadow();
         buttonCreate = new Button();
-        //buttonCreate.setMinSize(75, 40);
+
         buttonCreate.getStyleClass().add("my-button");
         buttonCreate.setLayoutX(0);
         buttonCreate.setLayoutY(100);
@@ -76,6 +76,7 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent event) {
                 closeDelete(root);
+                closeEdit(root);
                 authorLabel = new Label();
                 authorLabel.setText("Author's name");
                 authorLabel.setLayoutX(200);
@@ -107,6 +108,7 @@ public class Main extends Application {
                 yearTextField.setLayoutY(170);
                 root.getChildren().add(yearTextField);
                 buttonSave = new Button();
+
                 buttonSave.setMinSize(50, 20);
                 buttonSave.setText("Save");
                 buttonSave.setLayoutX(600);
@@ -146,6 +148,68 @@ public class Main extends Application {
         buttonEdit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                closeCreation(root);
+                closeDelete(root);
+                cb = new ChoiceBox<Book>();
+                labelDeleteChoice = new Label();
+                labelDeleteChoice.setText("Choose of the given Books to edit");
+                labelDeleteChoice.setFont(new Font("Arial", 15));
+                labelDeleteChoice.setLayoutX(250);
+                labelDeleteChoice.setLayoutY(150);
+                root.getChildren().add(labelDeleteChoice);
+                try {
+                    cb.setItems(FXCollections.observableArrayList(
+                                    FileHelper.getNames(pathFile))
+                    );
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                cb.setMinSize(130, 50);
+                cb.setLayoutX(280);
+                cb.setLayoutY(170);
+                cb.setTooltip(new Tooltip("Select the book"));
+                root.getChildren().add(cb);
+                closeButton(root, "edit");
+                choiceEdit = new Button();
+                choiceEdit.setMinSize(50, 20);
+                choiceEdit.setText("make Edit");
+                choiceEdit.setLayoutX(600);
+                choiceEdit.setLayoutY(150);
+                root.getChildren().add(choiceEdit);
+
+
+                choiceEdit.setOnAction(new EventHandler<ActionEvent>() {
+
+                    @Override
+                    public void handle(ActionEvent event) {
+                        textInfo = new TextField();
+
+                        textInfo.setText(String.valueOf(cb.getSelectionModel().getSelectedItem()));
+                        textInfo.setEditable(true);
+                        textInfo.setLayoutX(280);
+                        textInfo.setLayoutY(240);
+                        root.getChildren().add(textInfo);
+                        buttonSave = new Button();
+                        buttonSave.setText(" save edit");
+                        buttonSave.setLayoutX(280);
+                        buttonSave.setLayoutY(280);
+                        buttonSave.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent event) {
+                                //    try {
+                                System.out.println(textInfo.getText());
+
+
+                                // FileHelper.writeIntoFile(pathFile,Book.format(textInfo.getText()));
+                                //   } catch (IOException e) {
+                                //   e.printStackTrace();
+                            }
+                            // }
+                        });
+                        root.getChildren().add(buttonSave);
+
+                    }
+                });
 
 
             }
@@ -157,14 +221,15 @@ public class Main extends Application {
         buttonDelete.getStyleClass().add("my-button");
         buttonDelete.setLayoutX(0);
         buttonDelete.setLayoutY(220);
-         buttonDelete.setText("Delete");
+        buttonDelete.setText("Delete");
         buttonDelete.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                closeEdit(root);
 
                 closeCreation(root);
 
-                cb = new ChoiceBox();
+                cb = new ChoiceBox<Book>();
                 labelDeleteChoice = new Label();
                 labelDeleteChoice.setText("Choose of the given Books to delete");
                 labelDeleteChoice.setFont(new Font("Arial", 15));
@@ -184,7 +249,7 @@ public class Main extends Application {
                 cb.setTooltip(new Tooltip("Select the book"));
 
                 root.getChildren().add(cb);
-                buttonSave = new Button();
+
                 buttonSave.setMinSize(50, 20);
                 buttonSave.setText("Delete");
                 buttonSave.setLayoutX(600);
@@ -203,6 +268,8 @@ public class Main extends Application {
                             e.printStackTrace();
                         }
 
+                        label.setFont(new Font("Arial", 17));
+                        buttonSave.setTooltip(new Tooltip(" The file is deleted "));
                     }
 
 
@@ -233,7 +300,14 @@ public class Main extends Application {
                 if (function.equals("creation")) {
                     closeDelete(root);
                     closeCreation(root);
+                    closeEdit(root);
                 } else if (function.equals(("delete"))) {
+                    closeCreation(root);
+                    closeDelete(root);
+                    closeEdit(root);
+                }
+                if (function.equals("edit")) {
+                    closeEdit(root);
                     closeCreation(root);
                     closeDelete(root);
                 }
@@ -258,13 +332,25 @@ public class Main extends Application {
         root.getChildren().remove(nameLabel);
         root.getChildren().remove(buttonSave);
         root.getChildren().remove(buttonClose);
+        root.getChildren().remove(textInfo);
     }
 
     private static void closeDelete(Group root) {
         root.getChildren().remove(labelDeleteChoice);
         root.getChildren().remove(cb);
         root.getChildren().remove(buttonSave);
+        root.getChildren().remove(buttonClose);
+        root.getChildren().remove(textInfo);
 
+
+    }
+
+    private static void closeEdit(Group root) {
+        root.getChildren().remove(labelDeleteChoice);
+        root.getChildren().remove(cb);
+        root.getChildren().remove(choiceEdit);
+        root.getChildren().remove(buttonClose);
+        root.getChildren().remove(textInfo);
 
 
     }

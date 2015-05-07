@@ -9,8 +9,6 @@ public class FileHelper {
     static String divider = ";";
 
 
-
-
     public static void writeIntoFile(String pathFile, String author, String name, String year) {
 
         File file = new File(pathFile);
@@ -19,7 +17,7 @@ public class FileHelper {
         try {
 
 
-            FileWriter writer = new FileWriter(file, true);
+            FileWriter writer = new FileWriter(file, false);
             BufferedWriter df = new BufferedWriter(writer);
             df.newLine();
             df.write(author + divider);
@@ -68,22 +66,22 @@ public class FileHelper {
     public static ArrayList<Book> deleteBook(String name, String pathFile) throws IOException {
 
         ArrayList<Book> books = getNames(pathFile);
-for(Book list:books) {
-    for (int i = 0; i < books.size(); i++) {
-        if (name.equals(list.toString())) {
-books.remove(list);
-            System.out.println("Deleted");
-            return books;
-        } else System.out.println("No matches found");
-    }
-}
+        for (Book list : books) {
+            for (int i = 0; i < books.size(); i++) {
+                if (name.equals(list.toString())) {
+                    books.remove(list);
+                    System.out.println("Deleted");
+                    return books;
+                } else System.out.println("No matches found");
+            }
+        }
 
         return null;
     }
 
     public static void writeIntoFile(String pathFile, ArrayList<Book> books) throws IOException {
         File file = new File(pathFile);
-        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+
         FileWriter writer = new FileWriter(file, false);
         BufferedWriter df = new BufferedWriter(writer);
 
@@ -92,6 +90,23 @@ books.remove(list);
             df.write(list.toString());
             df.newLine();
         }
+
+        df.flush();
+
+        df.close();
+
+    }
+
+    public static void writeIntoFile(String pathFile, Book book) throws IOException {
+        File file = new File(pathFile);
+
+        FileWriter writer = new FileWriter(file, false);
+        BufferedWriter df = new BufferedWriter(writer);
+
+
+        df.write(book.toString());
+        df.newLine();
+
 
         df.flush();
 

@@ -15,6 +15,7 @@ import java.io.InputStream;
 public class MainBookSurface extends Group {
 
     private final Image image;
+
     public MainBookSurface() {
         image = new Image(getInputStreamForFile("book.jpg"));
 
@@ -29,8 +30,7 @@ public class MainBookSurface extends Group {
     }
 
 
-
-    private InputStream getInputStreamForFile(String path){
+    private InputStream getInputStreamForFile(String path) {
         try {
             return new FileInputStream(path);
         } catch (FileNotFoundException e) {
