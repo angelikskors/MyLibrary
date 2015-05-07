@@ -50,15 +50,13 @@ public class Main extends Application {
 
         Group root = new Group();
 
-        image = new Image(new FileInputStream("book.jpg"));
+        File f = new File("style.css");
+        root.getStylesheets().add("file:///" + f.getAbsolutePath());
 
-        Label label = new Label();
-        label.setText("Welcome to Smart Library");
-        label.setGraphic(new ImageView(image));
+        Label label = new Label("Welcome to Smart Library");
+        label.getStyleClass().add("welcome-label");
         label.setLayoutX(130);
         label.setLayoutY(0);
-        label.setFont(new Font("Arial", 30));
-        label.setAlignment(Pos.CENTER);
 
 
         root.getChildren().add(label);
@@ -66,11 +64,9 @@ public class Main extends Application {
 
         DropShadow shadow = new DropShadow();
         buttonCreate = new Button();
-        buttonCreate.setMinSize(75, 40);
+        buttonCreate.getStyleClass().add("my-button");
         buttonCreate.setLayoutX(0);
         buttonCreate.setLayoutY(100);
-        buttonCreate.setEffect(shadow);
-        buttonCreate.setFont(new Font("Arial", 17));
         buttonCreate.setText("Create");
         buttonCreate.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -139,11 +135,9 @@ public class Main extends Application {
         });
         root.getChildren().add(buttonCreate);
         buttonEdit = new Button();
-        buttonEdit.setMinSize(75, 40);
+        buttonEdit.getStyleClass().add("my-button");
         buttonEdit.setLayoutX(0);
         buttonEdit.setLayoutY(160);
-        buttonEdit.setEffect(shadow);
-        buttonEdit.setFont(new Font("Arial", 17));
         buttonEdit.setText("Edit");
         buttonEdit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -154,12 +148,9 @@ public class Main extends Application {
         root.getChildren().add(buttonEdit);
 
         buttonDelete = new Button();
-        buttonDelete.setMinSize(75, 40);
-        buttonDelete.setStyle("-fx-background-color: slateblue; -fx-text-fill: white;");
+        buttonDelete.getStyleClass().add("my-button");
         buttonDelete.setLayoutX(0);
         buttonDelete.setLayoutY(220);
-        buttonDelete.setEffect(shadow);
-        buttonDelete.setFont(new Font("Arial", 17));
         buttonDelete.setText("Delete");
         buttonDelete.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -216,7 +207,7 @@ public class Main extends Application {
 
 
         Scene scene = new Scene(root, widthStage, hightStage);
-        Paint paint = new Color(1, 0, 0, 0.5);
+        Paint paint = new Color(0.5, 0, 0, 0.5);
         scene.setFill(paint);
         primaryStage.setScene(scene);
         primaryStage.show();
