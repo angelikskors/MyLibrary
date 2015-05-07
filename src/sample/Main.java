@@ -12,6 +12,8 @@ import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -20,7 +22,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 public class Main extends Application {
-    private int widthStage = 600;
+    private int widthStage = 800;
     private int hightStage = 400;
     private Label label;
     private static Label labelDeleteChoice;
@@ -47,17 +49,16 @@ public class Main extends Application {
 
 
         Group root = new Group();
-        root.setStyle("-fx-background-color: grey;");
 
-        image = new Image(new FileInputStream("book.jpg"));
+        File f = new File("style.css");
+        root.getStylesheets().add(f.toURI().toString());
+        System.out.println(f.exists());
 
-        Label label = new Label();
-        label.setText("Welcome to Smart Library");
-        label.setGraphic(new ImageView(image));
+
+        Label label = new Label("Welcome to Smart Library");
+        label.getStyleClass().add("welcome-label");
         label.setLayoutX(130);
         label.setLayoutY(0);
-        label.setFont(new Font("Arial", 30));
-        label.setAlignment(Pos.CENTER);
 
 
         root.getChildren().add(label);
@@ -65,11 +66,11 @@ public class Main extends Application {
 
         DropShadow shadow = new DropShadow();
         buttonCreate = new Button();
-        buttonCreate.setMinSize(75, 40);
+        //buttonCreate.setMinSize(75, 40);
+        buttonCreate.getStyleClass().add("my-button");
         buttonCreate.setLayoutX(0);
         buttonCreate.setLayoutY(100);
-        buttonCreate.setEffect(shadow);
-        buttonCreate.setFont(new Font("Arial", 17));
+
         buttonCreate.setText("Create");
         buttonCreate.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -77,39 +78,39 @@ public class Main extends Application {
                 closeDelete(root);
                 authorLabel = new Label();
                 authorLabel.setText("Author's name");
-                authorLabel.setLayoutX(100);
-                authorLabel.setLayoutY(100);
+                authorLabel.setLayoutX(200);
+                authorLabel.setLayoutY(150);
                 root.getChildren().add(authorLabel);
                 textFieldName = new TextField();
                 textFieldName.setMaxSize(100, 100);
-                textFieldName.setLayoutX(100);
-                textFieldName.setLayoutY(120);
+                textFieldName.setLayoutX(200);
+                textFieldName.setLayoutY(170);
                 root.getChildren().add(textFieldName);
                 nameLabel = new Label();
                 nameLabel.setText("Name of the book");
-                nameLabel.setLayoutX(220);
-                nameLabel.setLayoutY(100);
+                nameLabel.setLayoutX(320);
+                nameLabel.setLayoutY(150);
                 root.getChildren().add(nameLabel);
                 textFieldInfo = new TextField();
                 textFieldInfo.setMaxSize(100, 100);
-                textFieldInfo.setLayoutX(220);
-                textFieldInfo.setLayoutY(120);
+                textFieldInfo.setLayoutX(320);
+                textFieldInfo.setLayoutY(170);
                 root.getChildren().add(textFieldInfo);
                 yearLabel = new Label();
                 yearLabel.setText("Year");
-                yearLabel.setLayoutX(340);
-                yearLabel.setLayoutY(100);
+                yearLabel.setLayoutX(440);
+                yearLabel.setLayoutY(150);
                 root.getChildren().add(yearLabel);
                 yearTextField = new TextField();
                 yearTextField.setMaxSize(100, 100);
-                yearTextField.setLayoutX(340);
-                yearTextField.setLayoutY(120);
+                yearTextField.setLayoutX(440);
+                yearTextField.setLayoutY(170);
                 root.getChildren().add(yearTextField);
                 buttonSave = new Button();
                 buttonSave.setMinSize(50, 20);
                 buttonSave.setText("Save");
-                buttonSave.setLayoutX(500);
-                buttonSave.setLayoutY(100);
+                buttonSave.setLayoutX(600);
+                buttonSave.setLayoutY(150);
                 root.getChildren().add(buttonSave);
                 buttonSave.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
@@ -138,27 +139,25 @@ public class Main extends Application {
         });
         root.getChildren().add(buttonCreate);
         buttonEdit = new Button();
-        buttonEdit.setMinSize(75, 40);
+        buttonEdit.getStyleClass().add("my-button");
         buttonEdit.setLayoutX(0);
         buttonEdit.setLayoutY(160);
-        buttonEdit.setEffect(shadow);
-        buttonEdit.setFont(new Font("Arial", 17));
         buttonEdit.setText("Edit");
         buttonEdit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+
 
             }
         });
         root.getChildren().add(buttonEdit);
 
         buttonDelete = new Button();
-        buttonDelete.setMinSize(75, 40);
+
+        buttonDelete.getStyleClass().add("my-button");
         buttonDelete.setLayoutX(0);
         buttonDelete.setLayoutY(220);
-        buttonDelete.setEffect(shadow);
-        buttonDelete.setFont(new Font("Arial", 17));
-        buttonDelete.setText("Delete");
+         buttonDelete.setText("Delete");
         buttonDelete.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -169,8 +168,8 @@ public class Main extends Application {
                 labelDeleteChoice = new Label();
                 labelDeleteChoice.setText("Choose of the given Books to delete");
                 labelDeleteChoice.setFont(new Font("Arial", 15));
-                labelDeleteChoice.setLayoutX(150);
-                labelDeleteChoice.setLayoutY(100);
+                labelDeleteChoice.setLayoutX(250);
+                labelDeleteChoice.setLayoutY(150);
                 root.getChildren().add(labelDeleteChoice);
                 try {
                     cb.setItems(FXCollections.observableArrayList(
@@ -180,16 +179,16 @@ public class Main extends Application {
                     e.printStackTrace();
                 }
                 cb.setMinSize(130, 50);
-                cb.setLayoutX(180);
-                cb.setLayoutY(120);
+                cb.setLayoutX(280);
+                cb.setLayoutY(170);
                 cb.setTooltip(new Tooltip("Select the book"));
 
                 root.getChildren().add(cb);
                 buttonSave = new Button();
                 buttonSave.setMinSize(50, 20);
                 buttonSave.setText("Delete");
-                buttonSave.setLayoutX(500);
-                buttonSave.setLayoutY(100);
+                buttonSave.setLayoutX(600);
+                buttonSave.setLayoutY(150);
                 root.getChildren().add(buttonSave);
                 closeButton(root, "delete");
                 buttonSave.setOnAction(new EventHandler<ActionEvent>() {
@@ -214,6 +213,8 @@ public class Main extends Application {
 
 
         Scene scene = new Scene(root, widthStage, hightStage);
+        Paint paint = new Color(0, 0, 0, 0.3);
+        scene.setFill(paint);
         primaryStage.setScene(scene);
         primaryStage.show();
 
@@ -223,8 +224,8 @@ public class Main extends Application {
         buttonClose = new Button();
         buttonClose.setMinSize(50, 20);
         buttonClose.setText("Close");
-        buttonClose.setLayoutX(500);
-        buttonClose.setLayoutY(130);
+        buttonClose.setLayoutX(600);
+        buttonClose.setLayoutY(200);
         root.getChildren().add(buttonClose);
         buttonClose.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -262,6 +263,8 @@ public class Main extends Application {
     private static void closeDelete(Group root) {
         root.getChildren().remove(labelDeleteChoice);
         root.getChildren().remove(cb);
+        root.getChildren().remove(buttonSave);
+
 
 
     }

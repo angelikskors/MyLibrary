@@ -2,10 +2,14 @@ package sample;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class FileHelper {
     static String divider = ";";
+
+
+
 
     public static void writeIntoFile(String pathFile, String author, String name, String year) {
 
@@ -64,15 +68,15 @@ public class FileHelper {
     public static ArrayList<Book> deleteBook(String name, String pathFile) throws IOException {
 
         ArrayList<Book> books = getNames(pathFile);
-
-        for (int i = 0; i < books.size(); i++) {
-            if (name.equals(books.get(i))) {
-                books.set(i, null);
-                System.out.println("Deleted");
-                return books;
-            } else System.out.println("No matches found");
-        }
-
+for(Book list:books) {
+    for (int i = 0; i < books.size(); i++) {
+        if (name.equals(list.toString())) {
+books.remove(list);
+            System.out.println("Deleted");
+            return books;
+        } else System.out.println("No matches found");
+    }
+}
 
         return null;
     }
