@@ -12,6 +12,8 @@ import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -47,7 +49,6 @@ public class Main extends Application {
 
 
         Group root = new Group();
-        root.setStyle("-fx-background-color: grey;");
 
         image = new Image(new FileInputStream("book.jpg"));
 
@@ -154,6 +155,7 @@ public class Main extends Application {
 
         buttonDelete = new Button();
         buttonDelete.setMinSize(75, 40);
+        buttonDelete.setStyle("-fx-background-color: slateblue; -fx-text-fill: white;");
         buttonDelete.setLayoutX(0);
         buttonDelete.setLayoutY(220);
         buttonDelete.setEffect(shadow);
@@ -214,6 +216,8 @@ public class Main extends Application {
 
 
         Scene scene = new Scene(root, widthStage, hightStage);
+        Paint paint = new Color(1, 0, 0, 0.5);
+        scene.setFill(paint);
         primaryStage.setScene(scene);
         primaryStage.show();
 
